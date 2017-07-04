@@ -1,0 +1,38 @@
+#!/bin/bash
+echo
+#Script to remove a customer
+echo Enter a keyword:
+	read keyword
+	while [ -z "$keyword" ]
+	#Cannot be null
+	do
+		echo Error, cannot be blank, try again
+		read keyword
+	done
+	grep -i $keyword CustDetails | nl
+echo
+echo Type the number of the row to delete or type ALL to delete all rows
+	read input
+echo Are you sure? Y/N?
+	read confirm
+	
+	if [[ "$confirm" =~ [Yy] ]]
+	#Allows upper or lower case
+	then
+		if [[ "$input" =~ ^[Aa][Ll][Ll]$ ]]
+		#Case insensitive
+		then
+			sed -i "/$keyword/ d" CustDetails
+			echo All entries removed
+		elif [[ $input =~ ^[0-9]+$ ]]
+		#Numeral only
+		then
+			sed -i "$input d" CustDetails
+			echo Row $input removed
+		else
+			echo Invalid entry
+		fi
+	else
+		echo Returning to menu
+	fi
+./Menu

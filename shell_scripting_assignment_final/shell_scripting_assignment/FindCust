@@ -1,0 +1,17 @@
+#!/bin/bash
+echo
+
+echo Enter a keyword:
+	read keyword
+	while [ -z "$keyword" ]
+	#Cannot be null
+	do
+		echo Error, cannot be blank
+		read keyword
+	done
+echo
+	grep -i $keyword CustDetails | nl
+	#numbers the lines returned
+read
+
+./Menu

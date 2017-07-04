@@ -1,0 +1,34 @@
+#!/bin/bash
+#Runs the main menu
+echo
+echo Welcome. Please choose one of the following:
+echo ============================================
+echo 1. Add a new customer
+echo 2. Remove an existing customer
+echo 3. Search for a customer
+echo 4. E-mail a customer
+echo --------------------------------------------
+echo 0. Exit the program
+echo ============================================
+echo Enter a number:
+echo
+
+read option
+case $option in
+
+1 )
+	./AddCust ;;
+2 )
+	./RemCust ;;
+3 )
+	./FindCust ;;
+4 )
+	./MailCust ;;
+0 )
+	echo Exiting...
+	read
+	exit ;;
+* )	
+	echo Invalid option
+	./Menu ;;
+esac

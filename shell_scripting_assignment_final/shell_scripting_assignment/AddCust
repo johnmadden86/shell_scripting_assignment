@@ -1,0 +1,57 @@
+#!/bin/bash
+#Script to add customers
+
+echo
+
+echo Enter name:
+	read name
+
+	while [ -z "$name" ]
+	#Ensures string is not null
+	do
+		echo Error, cannot be blank, try again
+		read name
+	done
+
+echo Enter address:
+	read address
+
+	while [ -z "$address" ]
+	do
+		echo Error, cannot be blank, try again
+		read address
+	done
+
+echo Enter phone number:
+	read phone
+	until [[ $phone =~ ^[0-9]+$ ]]
+	#Only allows numerals to be entered, string can be any length
+	do
+		echo Error, only numeric values allowed, try again
+		read phone
+	done
+
+echo Enter e-mail address:
+	read email
+	
+	while [[ "$email" != ?*@?*.?* ]]
+	#Only allows emails with  the correct format
+	do
+		echo Error, must be in the format ****@***.*** , try again
+		read email
+	done
+
+echo Enter alias:
+	read alias
+	
+	while [ -z "$alias" ]
+	do
+		echo Error, cannot be blank, try again
+		read alias
+	done
+
+echo $email $name $alias $address $phone >> CustDetails
+#Creates the file if not in existance
+
+./Menu
+#Return to menu after

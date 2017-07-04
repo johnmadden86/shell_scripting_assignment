@@ -1,0 +1,79 @@
+#!/bin/bash
+#Script to send mail
+echo
+echo Enter the email address to mail to, or
+echo type LIST to select from address book,
+echo type ALL to email all in address book
+	read selection
+	while [ -z "$selection" ]
+	#Cannot be null
+	do
+		echo Error, cannot be blank, try again
+		read selection
+
+	done
+if [[ "$selection" == ?*@?*.?* ]]
+#Checks email format
+then
+	mail_address=$selection
+	echo Sending to $mail_address
+
+elif [[ "$selection" =~ ^[Ll][Ii][Ss][Tt]$ ]]
+#Case insensitive
+then
+	echo Enter a search term:
+	read search
+		while [ -z "$search" ]
+		do
+			echo Error, cannot be blank, try again
+			read search
+		done	
+	
+	grep -i $search CustDetails | awk '{print $2, $1}' | nl
+	#Return name, email. Lines numbered
+	echo Type the number of the row to email or type EACH to email every row displayed
+		read choice
+	
+		while [ -z "$choice" ]
+		do
+			echo Error, cannot be blank, try again
+			read choice
+		done
+
+	if [[ "$choice" =~ ^[0-9]$ ]]
+	#numerals only
+	then
+		mail_address=$(grep -i $search CustDetails | awk "NR==$choice" | awk '{print $1}')
+		#return one line only, with email only
+		echo Sending to $mail_address
+
+	elif [[ "$choice" =~ ^[Ee][Aa][Cc][Hh]$ ]]
+	then	
+		mail_address=$(grep -i $search CustDetails | awk '{print $1}' | xargs)
+		#Return all on a single line
+		echo Sending to $mail_address
+
+	else
+		echo Invalid entry
+	fi
+
+elif [[ "$selection" =~ ^[Aa][Ll][Ll]$ ]]
+then
+	mail_address=$(awk '{print $1}' CustDetails | xargs)
+	echo Sending to $mail_address
+else
+	echo Invalid entry	
+fi
+
+
+if [ ${#mail_address} -gt 0 ]
+#Only run if mail_address is not null
+then
+	echo Enter a subject
+		read subject
+	echo Enter a message
+		read message
+	echo $message | mail -s $subject $mail_address
+fi
+read
+./Menu
